@@ -1,0 +1,4 @@
+Sphinx==7.0.1
+sphinx-revealjs==2.6.0
+budoux==0.5.2
+beautifulsoup4==4.12.2
