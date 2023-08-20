@@ -23,8 +23,35 @@
 * Python 3.11の新機能Data Class Transforms（PEP 681）について解説
 * PEP 681はどのような問題を解決するのか
 
-Python 3.11の新機能 Data Class Transforms（PEP 681）とは何か
-============================================================
+Data Class Transforms（PEP 681）をざっくり説明すると
+====================================================
+
+「データクラスと似た構造を持つクラスを扱うライブラリ」の型チェックを強化する機能
+
+そもそもデータクラスとは
+------------------------
+
+クラスに定義した型アノテーションを元に、 ``dataclasses.dataclass`` デコレーターによって属性を自動生成したクラス
+
+.. revealjs-code-block:: python
+
+   from dataclasses import dataclass
+
+   @dataclass
+   class Book:
+       title: str
+       price: int
+
+   b = Book(title="Python実践レシピ", price=2970)
+   print(b.name, b.price)
+
+
+「データクラスと似た構造を持つクラスを扱うライブラリ」とは
+----------------------------------------------------------
+
+* `attrs <https://www.attrs.org/en/stable/>`_
+* `Pydantic <https://docs.pydantic.dev/latest/>`_
+* O/Rマッパー（ `SQLAlchemy <https://www.sqlalchemy.org/>`_ 、 `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内臓のO/Rマッパー ）
 
 PEP 681以前に存在したある問題
 =============================
