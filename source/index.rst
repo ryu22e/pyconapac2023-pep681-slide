@@ -44,6 +44,9 @@ Data Class Transforms（PEP 681）をざっくり説明すると
 
    b = Book(title="Python実践レシピ", price=2970)
    print(b.name, b.price)
+   # price引数の型が間違っているので型チェッカーではエラーになる
+   b = Book(title="Python実践レシピ", price="定価2,970円（本体2,700円＋税10%）")
+   print(b.name, b.price)
 
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」とは
