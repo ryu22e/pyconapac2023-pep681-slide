@@ -54,7 +54,7 @@ Data Class Transforms（PEP 681）をざっくり説明すると
 
 * `attrs <https://www.attrs.org/en/stable/>`_
 * `Pydantic <https://docs.pydantic.dev/latest/>`_
-* O/Rマッパー（ `SQLAlchemy <https://www.sqlalchemy.org/>`_ 、 `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内臓のO/Rマッパー ）
+* O/Rマッパー（ `SQLAlchemy <https://www.sqlalchemy.org/>`_ 、 `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー ）
 
 PEP 681以前に存在したある問題
 =============================
