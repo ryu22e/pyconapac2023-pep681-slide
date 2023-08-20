@@ -11,7 +11,11 @@
 自己紹介
 --------
 
-TODO ここに自己紹介を書く
+* Ryuji Tsutsui @ryu22e
+* 株式会社hokan所属
+* Python歴は12年くらい（主にDjango）
+* Python Boot Camp、Shonan.py GCPUG Shonanなどコミュニティ活動もしています
+* 著書（共著）：『 `Python実践レシピ <https://gihyo.jp/book/2022/978-4-297-12576-9>`_ 』
 
 今日話したいこと
 ----------------
