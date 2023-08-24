@@ -64,6 +64,7 @@ PEP 681以前に存在したある問題
 
 .. revealjs-code-block:: python
 
+   """orm.py"""
    class Base:
        """リレーショナルデータベースとマッピングさせるクラスの基底クラス"""
        def __init__(self, **kwargs):
@@ -77,6 +78,18 @@ PEP 681以前に存在したある問題
     class Integer:
         """整数フィールド用のクラス"""
         pass
+
+.. revealjs-break::
+
+.. revealjs-code-block:: python
+
+   """使用例"""
+   from orm import Base, String, Integer
+
+   class Book(Base):
+       """書籍を表すクラス"""
+       title = String()
+       price = Integer()
 
 PEP 681登場によって何が解決されるのか
 =====================================
