@@ -28,6 +28,11 @@ Data Class Transforms（PEP 681）をざっくり説明すると
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」の型チェックを強化する機能
 
+…だけじゃ分かりませんよね？
+---------------------------
+
+もう少し詳しく説明します。
+
 そもそもデータクラスとは
 ------------------------
 
@@ -39,14 +44,25 @@ Data Class Transforms（PEP 681）をざっくり説明すると
 
    @dataclass
    class Book:
+       # ↓型アノテーション
        title: str
        price: int
 
-   b = Book(title="Python実践レシピ", price=2970)
-   print(b.name, b.price)
+   book = Book(title="Python実践レシピ", price=2970)
+   print(book.title, book.price)
    # price引数の型が間違っているので型チェッカーではエラーになる
-   b = Book(title="Python実践レシピ", price="定価2,970円（本体2,700円＋税10%）")
-   print(b.name, b.price)
+   book = Book(title="Python実践レシピ", price="定価2,970円（本体2,700円＋税10%）")
+   print(book.title, book.price)
+
+.. revealjs-break::
+
+.. revealjs-code-block:: bash
+
+   $ pyright example.py
+   /****/example.py
+     /****/example.py:12:40 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+       "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
+   1 error, 0 warnings, 0 informations
 
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」とは
@@ -83,13 +99,53 @@ PEP 681以前に存在したある問題
 
 .. revealjs-code-block:: python
 
-   """使用例"""
+   """使用例(books.py)"""
    from orm import Base, String, Integer
 
    class Book(Base):
        """書籍を表すクラス"""
        title = String()
        price = Integer()
+
+こんなコードを書くとどうなる？
+------------------------------
+
+``books.py`` の最後に以下のコードを追加
+
+.. revealjs-code-block:: python
+
+   book = Book(
+       title="Python実践レシピ",
+       # priceは整数型なのでこれは間違っている
+       price="定価2,970円（本体2,700円＋税10%）",
+   )
+
+型チェックではエラーにならない
+------------------------------
+
+.. revealjs-code-block:: shell
+
+   $ pyright books.py
+   （省略）
+   0 errors, 0 warnings, 0 informations
+   Completed in 0.512sec
+   ✨  Done in 0.86s.
+
+なぜエラーにならないのか
+------------------------
+
+``Book.__init__`` には型情報がないので。
+
+.. revealjs-code-block:: shell
+
+   >>> from books import Book
+   Baseクラスの初期化処理
+   >>> help(Book.__init__)
+   Help on function __init__ in module orm:
+
+   __init__(self, **kwargs)
+       Initialize self.  See help(type(self)) for accurate signature.
+   (END)
 
 PEP 681登場によって何が解決されるのか
 =====================================
