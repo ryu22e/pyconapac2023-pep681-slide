@@ -150,8 +150,91 @@ PEP 681以前に存在したある問題
 PEP 681登場によって何が解決されるのか
 =====================================
 
+typingモジュールに `dataclass_transform <https://docs.python.org/3/library/typing.html#typing.dataclass_transform>`_ デコレーターが追加された。
+
+dataclass_transformデコレーターの使用例
+---------------------------------------
+
+.. revealjs-code-block:: python
+
+    """my_orm.py"""
+    rom typing import TypeVar, dataclass_transform
+
+    from orm import Integer, String
+
+    T = TypeVar("T")
+
+    @dataclass_transform()
+    def create_model(cls: type[T]) -> type[T]:
+        """Bookクラスに適用するデコレーター"""
+        # クラスの型アノテーションを元にフィールドを追加
+        for key, value in cls.__annotations__.items():
+            if value is str:
+                setattr(cls, key, String())
+            elif value is int:
+                setattr(cls, key, Integer())
+        return cls
+
+.. revealjs-break::
+
+.. revealjs-code-block:: python
+
+    from my_orm import create_model
+    from orm import Base
+
+    @create_model
+    class Book(Base):
+        title: str
+        price: int
+
+    book = Book(
+        title="Python実践レシピ",
+        # priceは整数型なのでこれは間違っている
+        price="定価2,970円（本体2,700円＋税10%）",
+    )
+
+型チェックしてみると…
+---------------------
+
+データクラスと同じように型チェックが行われる。
+
+.. revealjs-code-block:: shell
+
+    $ pyright books4.py
+    （省略）
+    /***/books4.py
+      /***/books4.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
+    1 error, 0 warnings, 0 informations
+    Completed in 0.452sec
+    error Command failed with exit code 1.
+    info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
 dataclass_transformデコレータの仕組みについて解説
 =================================================
+
+dataclass_transformデコレータのソースコードはたったこれだけ。
+
+.. revealjs-code-block:: python
+
+    def dataclass_transform(
+        *,
+        eq_default: bool = True,
+        order_default: bool = False,
+        kw_only_default: bool = False,
+        field_specifiers: tuple[type[Any] | Callable[..., Any], ...] = (),
+        **kwargs: Any,
+    ) -> Callable[[T], T]:
+        def decorator(cls_or_fn):
+            cls_or_fn.__dataclass_transform__ = {
+                "eq_default": eq_default,
+                "order_default": order_default,
+                "kw_only_default": kw_only_default,
+                "field_specifiers": field_specifiers,
+                "kwargs": kwargs,
+            }
+            return cls_or_fn
+        return decorator
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」のPEP 681への対応状況
 ===========================================================================
