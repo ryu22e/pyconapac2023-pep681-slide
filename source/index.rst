@@ -153,6 +153,81 @@ PEP 681以前に存在したある問題
        Initialize self.  See help(type(self)) for accurate signature.
    (END)
 
+データクラスなら型チェックができるが…
+-------------------------------------
+
+.. revealjs-code-block:: python
+
+    from dataclasses import dataclass
+
+    @dataclass
+    class Book:
+        title: str
+        price: int
+
+    book = Book(
+        title="Python実践レシピ",
+        # priceは整数型なのでこれは間違っている
+        price="定価2,970円（本体2,700円＋税10%）",
+    )
+
+.. revealjs-break::
+
+.. revealjs-code-block:: shell
+
+    $ pyright dataclass_books.py
+    （省略）
+    /***/dataclass_books.py
+      /***/dataclass_books.py:11:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
+    1 error, 0 warnings, 0 informations
+    Completed in 0.448sec
+    error Command failed with exit code 1.
+    info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+ではこんな風に書けばいいのでは？
+--------------------------------
+
+.. revealjs-code-block:: python
+
+    from dataclasses import dataclass
+
+    from orm import Base
+
+    @dataclass
+    class Book(Base):
+        title: str
+        price: int
+
+    book = Book(
+        title="Python実践レシピ",
+        # priceは整数型なのでこれは間違っている
+        price="定価2,970円（本体2,700円＋税10%）",
+    )
+
+一応型チェックはできるが…
+-------------------------
+
+.. revealjs-code-block:: shell
+
+    $ pyright books2.py
+    （省略）
+    /***/books2.py
+      /***/books2.py:13:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
+    1 error, 0 warnings, 0 informations
+    Completed in 0.454sec
+    error Command failed with exit code 1.
+
+``Base.__init__`` に定義されたコードが呼ばれなくなった
+------------------------------------------------------
+
+``Base.__init__`` に書いた ``print("Baseクラスの初期化処理")`` が呼ばれない。
+
+.. revealjs-code-block:: shell
+
+    $ python books2.py
+
 PEP 681登場によって何が解決されるのか
 =====================================
 
