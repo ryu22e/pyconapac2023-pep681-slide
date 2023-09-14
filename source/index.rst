@@ -226,7 +226,8 @@ PEP 681以前に存在したある問題
 
 .. revealjs-code-block:: shell
 
-    $ python books2.py
+    $ python books2.py  # "Baseクラスの初期化処理"が表示されない
+
 
 PEP 681登場によって何が解決されるのか
 =====================================
@@ -236,11 +237,11 @@ typingモジュールに `dataclass_transform <https://docs.python.org/3/library
 dataclass_transformデコレーターの使用例
 ---------------------------------------
 
+まず、以下の ``my_orm.py`` を作成。
+
 .. revealjs-code-block:: python
 
-    """my_orm.py"""
-    rom typing import TypeVar, dataclass_transform
-
+    from typing import TypeVar, dataclass_transform
     from orm import Integer, String
 
     T = TypeVar("T")
@@ -257,6 +258,8 @@ dataclass_transformデコレーターの使用例
         return cls
 
 .. revealjs-break::
+
+次に、以下の ``books4.py`` を作成。
 
 .. revealjs-code-block:: python
 
@@ -294,7 +297,10 @@ dataclass_transformデコレーターの使用例
 dataclass_transformデコレータの仕組みについて解説
 =================================================
 
-dataclass_transformデコレータのソースコードはたったこれだけ。
+dataclass_transformデコレータのソースコードはこうなっている
+-----------------------------------------------------------
+
+``dataclass_transform`` デコレータはクラスに ``__dataclass_transform__`` 属性を追加するだけ。
 
 .. revealjs-code-block:: python
 
@@ -316,6 +322,10 @@ dataclass_transformデコレータのソースコードはたったこれだけ�
             }
             return cls_or_fn
         return decorator
+
+.. revealjs-break::
+
+型チェッカーは ``__dataclass_transform__`` 属性があるクラスに対して、型アノテーションをもとにした型チェックを行う。
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」のPEP 681への対応状況
 ===========================================================================
