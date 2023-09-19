@@ -29,15 +29,17 @@
 * Data Class Transforms（PEP 681）によりどうやって前述の問題を解決するのか理解できる
 * 上記2つを知ることで、より安全なコードを書けるようになる
 
-Data Class Transforms（PEP 681）をざっくり説明すると
-====================================================
+PEP 681を一言で説明すると
+=========================
+
+.. revealjs-break::
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」の型チェックを強化する機能
 
 …だけじゃ分かりませんよね？
 ---------------------------
 
-もう少し詳しく説明します。
+「データクラスと似た構造を持つクラスを扱うライブラリ」についてもっと噛み砕いで説明します。
 
 そもそもデータクラスとは
 ------------------------
@@ -60,7 +62,8 @@ Data Class Transforms（PEP 681）をざっくり説明すると
    book = Book(title="Python実践レシピ", price="定価2,970円（本体2,700円＋税10%）")
    print(book.title, book.price)
 
-.. revealjs-break::
+データクラスは型チェッカーを使って型チェックできる
+--------------------------------------------------
 
 .. revealjs-code-block:: bash
 
@@ -76,7 +79,8 @@ Data Class Transforms（PEP 681）をざっくり説明すると
 
 * `attrs <https://www.attrs.org/en/stable/>`_
 * `Pydantic <https://docs.pydantic.dev/latest/>`_
-* O/Rマッパー（ `SQLAlchemy <https://www.sqlalchemy.org/>`_ 、 `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー ）
+* `SQLAlchemy <https://www.sqlalchemy.org/>`_ 
+* `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー
 
 PEP 681以前に存在したある問題
 =============================
