@@ -59,7 +59,10 @@ PEP 681を一言で説明すると
    book = Book(title="Python実践レシピ", price=2970)
    print(book.title, book.price)
    # price引数の型が間違っているので型チェッカーではエラーになる
-   book = Book(title="Python実践レシピ", price="定価2,970円（本体2,700円＋税10%）")
+   book = Book(
+       title="Python実践レシピ",
+       price="定価2,970円（本体2,700円＋税10%）",
+   )
    print(book.title, book.price)
 
 データクラスは型チェッカーを使って型チェックできる
@@ -69,7 +72,7 @@ PEP 681を一言で説明すると
 
    $ pyright example.py
    /****/example.py
-     /****/example.py:12:40 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+     /****/example.py:14:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
    1 error, 0 warnings, 0 informations
 
