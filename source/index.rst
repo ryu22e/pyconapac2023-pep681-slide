@@ -85,8 +85,10 @@ PEP 681を一言で説明すると
 * `SQLAlchemy <https://www.sqlalchemy.org/>`_ 
 * `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー
 
-Djangoで前述のBookクラスを表現すると
-------------------------------------
+Djangoの例
+----------
+
+Djangoで前述の ``Book`` クラスを定義するとこうなる
 
 .. revealjs-code-block:: python
 
