@@ -85,6 +85,17 @@ PEP 681を一言で説明すると
 * `SQLAlchemy <https://www.sqlalchemy.org/>`_ 
 * `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー
 
+Djangoで前述のBookクラスを表現すると
+------------------------------------
+
+.. revealjs-code-block:: python
+
+   from django.db import models
+
+   class Book(models.Model):
+       title = models.CharField(max_length=255)
+       price = models.IntegerField()
+
 PEP 681以前に存在したある問題
 =============================
 
