@@ -88,7 +88,7 @@ PEP 681を一言で説明すると
 Djangoの例
 ----------
 
-Djangoで前述の ``Book`` クラスを定義するとこうなる
+Djangoで前述のデータクラス ``Book`` を表現するとこうなる
 
 .. revealjs-code-block:: python
 
