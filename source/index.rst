@@ -373,7 +373,13 @@ dataclass_transformデコレータのソースコードはこうなっている
 
 2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。
 
-TODO PyrightのPEP 681に関するURLを貼る
+.. revealjs-break::
+
+以下公式ドキュメント「Type Checking Features」にPEP 681が載っている。
+
+https://microsoft.github.io/pyright/#/features
+
+.. revealjs-break::
 
 TODO PylanceやVSCodeについても書く
 
