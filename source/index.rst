@@ -258,7 +258,27 @@ PEP 681以前に存在したある問題
 
     $ python books2.py  # "Baseクラスの初期化処理"が表示されない
 
-TODO Mypyの拡張についても書く
+すべてのライブラリで型ヒントの恩恵を受けるのは難しい
+----------------------------------------------------
+
+型チェッカー側でプラグインとしてこれを解決しようとしているものもある。
+
+.. revealjs-break::
+
+例えばMypyはプラグインで機能を拡張できる。
+
+.. revealjs-code-block:: toml
+
+    # 設定ファイル（mypy.ini）にこんな形でプラグインを指定できる
+   [mypy]
+   plugins = /one/plugin.py, other.plugin
+
+参考: https://mypy.readthedocs.io/en/stable/extending_mypy.html#configuring-mypy-to-use-plugins
+
+.. revealjs-break::
+
+ただし、プラグインは特定の型チェッカー専用。しかも、メンテナの負担が大きい。
+
 
 PEP 681登場によって何が解決されるのか
 =====================================
@@ -381,7 +401,33 @@ https://microsoft.github.io/pyright/#/features
 
 .. revealjs-break::
 
-TODO PylanceやVSCodeについても書く
+MypyはIssueがあるがまだ対応はされていない。
+
+https://github.com/python/mypy/issues/12840
+
+.. revealjs-break::
+
+Pyreは0.9.11のリリースノートに"Basic support for PEP 681 (dataclass transforms)."と書いているが、実際に型チェックしてみるとエラーを検出してくれなかった（0.9.18で確認）。
+
+https://github.com/facebook/pyre-check/releases/tag/v0.9.11
+
+.. revealjs-break::
+
+pytypeはPython 3.11対応自体がまだできていない。
+
+https://github.com/google/pytype/issues/1308
+
+PyrightはVS Codeから簡単に呼び出せる
+------------------------------------
+
+Pylanceという拡張をインストールすると、VS Codeから簡単にPyrightを呼び出せる。
+
+.. revealjs-break::
+
+.. figure:: vscode-and-pylance.*
+   :alt: VS Code + Pylanceでエラーを表示できる
+
+   VS Code + Pylanceでエラーを表示できる
 
 まとめ
 ======
