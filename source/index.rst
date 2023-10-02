@@ -474,6 +474,10 @@ Pydanticは ``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコ�
 SQLAlchemyはattrsを使ったクラスをSQLAlchemy用のクラスにする機能がある。
 また、データクラスそのものも利用できる。
 
+.. revealjs-break::
+
+Djangoは `Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) を検索してみたが、PEP 681に関する情報は見当たらなかった。
+
 まとめ
 ======
 
