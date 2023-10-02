@@ -383,10 +383,10 @@ dataclass_transformデコレータのソースコードはこうなっている
 
 以下について調べた。
 
-* Pyright
-* Mypy
-* Pyre
-* pytype
+* Pyright(1.1.328)
+* Mypy(1.5.1)
+* Pyre(0.9.18)
+* pytype(2023.9.27)
 
 調べた結果
 ----------
@@ -434,10 +434,10 @@ Pylanceという拡張をインストールすると、VS Codeから簡単にPyr
 
 以下について調べた。
 
-* attrs
-* Pydantic
-* SQLAlchemy
-* Django内蔵のO/Rマッパー
+* attrs(23.1.0)
+* Pydantic(2.4.2)
+* SQLAlchemy(2.0.21)
+* Django内蔵のO/Rマッパー(4.2.5)
 
 調べた結果
 ----------
