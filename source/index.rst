@@ -446,7 +446,7 @@ Django以外はPEP 681に対応している。
 
 .. revealjs-break::
 
-attrは ``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
+attrsは ``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
 
 .. revealjs-code-block:: python
 
