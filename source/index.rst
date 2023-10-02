@@ -82,7 +82,7 @@ PEP 681を一言で説明すると
 
 * `attrs <https://www.attrs.org/en/stable/>`_
 * `Pydantic <https://docs.pydantic.dev/latest/>`_
-* `SQLAlchemy <https://www.sqlalchemy.org/>`_ 
+* `SQLAlchemy <https://www.sqlalchemy.org/>`_
 * `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー
 
 Djangoの例
@@ -378,8 +378,8 @@ dataclass_transformデコレータのソースコードはこうなっている
 
 型チェッカーは ``__dataclass_transform__`` 属性があるクラスに対して、型アノテーションをもとにした型チェックを行う。
 
-「データクラスと似た構造を持つクラスを扱うライブラリ」のPEP 681への対応状況
-===========================================================================
+型チェッカーのPEP 681への対応状況
+=================================
 
 以下について調べた。
 
@@ -428,6 +428,51 @@ Pylanceという拡張をインストールすると、VS Codeから簡単にPyr
    :alt: VS Code + Pylanceでエラーを表示できる
 
    VS Code + Pylanceでエラーを表示できる
+
+「データクラスと似た構造を持つクラスを扱うライブラリ」のPEP 681への対応状況
+===========================================================================
+
+以下について調べた。
+
+* attrs
+* Pydantic
+* SQLAlchemy
+* Django内蔵のO/Rマッパー
+
+調べた結果
+----------
+
+Django以外はPEP 681に対応している。
+
+.. revealjs-break::
+
+attrは ``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
+
+.. revealjs-code-block:: python
+
+   import attr
+
+   @attr.define
+   class Book:
+       title: str
+       price: int
+
+.. revealjs-break::
+
+Pydanticは ``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+
+.. revealjs-code-block:: python
+
+    from pydantic import BaseModel
+
+    class Book(BaseModel):
+        title: str
+        price: int
+
+.. revealjs-break::
+
+SQLAlchemyはattrsを使ったクラスをSQLAlchemy用のクラスにする機能がある。
+また、データクラスそのものも利用できる。
 
 まとめ
 ======
