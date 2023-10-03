@@ -569,10 +569,14 @@ Django内蔵のO/Rマッパーについて
 まとめ
 ======
 
+まとめ1
+-------
+
 * PEP 681登場以前、attrs、Pydantic、SQLAlchemy、Django ORMなどでは、初期化処理に関する型チェックを行うことができなかった
 * PEP 681でこれらのライブラリでもデータクラスのような型チェックをできる
 
-.. revealjs-break::
+まとめ2
+-------
 
 * 2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。他の型チェッカーがんばれ！
-* attrs、Pydantic、SQLAlchemyはPEP 681に対応している。Djangoも対応してほしい…
+* attrs、Pydantic、SQLAlchemyはPEP 681に対応している。Djangoも対応してほしい😢
