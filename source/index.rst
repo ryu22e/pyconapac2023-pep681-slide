@@ -535,19 +535,31 @@ SQLAlchemyについて
 
     mapper_registry = registry()
 
-    @mapper_registry.mapped
     @attr.define(slots=False)
     class Book:
-        __table__ = Table(
-            "book",
-            mapper_registry.metadata,
-            Column("id", Integer, autoincrement=True, primary_key=True),
-            Column("title", String(50)),
-            Column("price", Integer),
-        )
         id: Mapped[int] = attr.ib(init=False)
         title: Mapped[str]
         price: Mapped[int]
+    # ↓まだ続きがある
+
+
+.. revealjs-break::
+
+データクラスの定義とテーブル定義で似たような構造を二重管理することになるので少し面倒そう。
+
+.. revealjs-code-block:: python
+
+    # ↑前の続き
+    book = Table(
+        "book",
+        mapper_registry.metadata,
+        Column("id", Integer, autoincrement=True, primary_key=True),
+        Column("title", String(50)),
+        Column("price", Integer),
+    )
+
+    mapper_registry.map_imperatively(Book, book)
+
 
 Django内蔵のO/Rマッパーについて
 -------------------------------
