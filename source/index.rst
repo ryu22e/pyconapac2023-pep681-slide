@@ -263,7 +263,8 @@ PEP 681以前に存在したある問題
 
 型チェッカー側でプラグインとしてこれを解決しようとしているものもある。
 
-.. revealjs-break::
+Mypyのプラグイン機能
+--------------------
 
 例えばMypyはプラグインで機能を拡張できる。
 
@@ -275,7 +276,8 @@ PEP 681以前に存在したある問題
 
 参考: https://mypy.readthedocs.io/en/stable/extending_mypy.html#configuring-mypy-to-use-plugins
 
-.. revealjs-break::
+プラグインにも問題がある
+------------------------
 
 ただし、プラグインは特定の型チェッカー専用。しかも、メンテナの負担が大きい。
 
@@ -307,7 +309,6 @@ dataclass_transformデコレーターの使用例
 
     @dataclass_transform()
     def create_model(cls: type[T]) -> type[T]:
-        """Bookクラスに適用するデコレーター"""
         # クラスの型アノテーションを元にフィールドを追加
         for key, value in cls.__annotations__.items():
             if value is str:
@@ -318,7 +319,7 @@ dataclass_transformデコレーターの使用例
 
 .. revealjs-break::
 
-次に、以下の ``books4.py`` を作成。
+次に、以下の ``books.py`` を作成。
 
 .. revealjs-code-block:: python
 
@@ -343,10 +344,10 @@ dataclass_transformデコレーターの使用例
 
 .. revealjs-code-block:: shell
 
-    $ pyright books4.py
+    $ pyright books.py
     （省略）
-    /***/books4.py
-      /***/books4.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+    /***/books.py
+      /***/books.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
         "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
     1 error, 0 warnings, 0 informations
     Completed in 0.452sec
