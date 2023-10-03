@@ -564,7 +564,7 @@ SQLAlchemyについて
 Django内蔵のO/Rマッパーについて
 -------------------------------
 
-`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) を検索してみたが、PEP 681に関する情報は見当たらなかった。
+`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) で「PEP 681」、「dataclass_transform」を検索してみたが、該当する情報は見当たらなかった。
 
 まとめ
 ======
