@@ -399,29 +399,34 @@ dataclass_transformデコレータのソースコードはこうなっている
 調べた結果
 ----------
 
-2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。
+2023年10月27日現在、公式ドキュメントでPEP 681対応を謳っているのはPyrightのみ。
 
-.. revealjs-break::
+Pyrightについて
+---------------
 
 以下公式ドキュメント「Type Checking Features」にPEP 681が載っている。
 
 https://microsoft.github.io/pyright/#/features
 
-.. revealjs-break::
+Mypyについて
+------------
 
-MypyはIssueがあるがまだ対応はされていない。
+このスライドに載せたサンプルコードで型チェックできることは確認したが、以下Issueの内容を読むと完全に対応したわけではなさそう。
 
-https://github.com/python/mypy/issues/12840
+https://github.com/python/mypy/issues/14293
 
-.. revealjs-break::
+Pyreについて
+------------
 
-Pyreは0.9.11のリリースノートに"Basic support for PEP 681 (dataclass transforms)."と書いているが、実際に型チェックしてみるとエラーを検出してくれなかった（0.9.18で確認）。
+0.9.11のリリースノートに"Basic support for PEP 681 (dataclass transforms)."と書いているが、実際に型チェックしてみるとエラーを検出してくれなかった（0.9.18で確認）。
 
 https://github.com/facebook/pyre-check/releases/tag/v0.9.11
 
-.. revealjs-break::
+pytypeについて
+--------------
 
-pytypeはPython 3.11対応自体がまだできていない。
+Python 3.11対応自体がまだできていない。
+Python 3.11対応は以下Issueで進めている。
 
 https://github.com/google/pytype/issues/1308
 
@@ -452,9 +457,10 @@ Pylanceという拡張をインストールすると、VS Codeから簡単にPyr
 
 Django以外はPEP 681に対応している。
 
-.. revealjs-break::
+attrsについて
+-------------
 
-attrsは ``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
+``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
 
 .. revealjs-code-block:: python
 
@@ -465,9 +471,10 @@ attrsは ``attr.define`` デコレータが ``dataclass_transform`` デコレー
        title: str
        price: int
 
-.. revealjs-break::
+Pydanticについて
+----------------
 
-Pydanticは ``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
 
 .. revealjs-code-block:: python
 
@@ -477,9 +484,12 @@ Pydanticは ``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコ�
         title: str
         price: int
 
-.. revealjs-break::
+SQLAlchemyについて
+------------------
 
-SQLAlchemyは ``sqlalchemy.orm.MappedAsDataclass`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+``dataclass_transform`` デコレータに相当する機能を持つものは2つ。
+
+1つ目は ``sqlalchemy.orm.MappedAsDataclass`` クラス。
 
 .. revealjs-code-block:: python
 
@@ -490,8 +500,23 @@ SQLAlchemyは ``sqlalchemy.orm.MappedAsDataclass`` クラスが ``dataclass_tran
         pass
 
     class Book(MappedAsDataclass, Base):
-        """User class will be converted to a dataclass"""
+        __tablename__ = "book"
+        id: Mapped[int] = mapped_column(init=False, primary_key=True)
+        title: Mapped[str]
+        price: Mapped[int]
 
+.. revealjs-break::
+
+2つ目は ``registry.mapped_as_dataclass()`` 。
+
+.. revealjs-code-block:: python
+
+    from sqlalchemy.orm import Mapped, mapped_column, registry
+
+    reg = registry()
+
+    @reg.mapped_as_dataclass(unsafe_hash=True)
+    class Book:
         __tablename__ = "book"
 
         id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -524,13 +549,18 @@ SQLAlchemyは ``sqlalchemy.orm.MappedAsDataclass`` クラスが ``dataclass_tran
         title: Mapped[str]
         price: Mapped[int]
 
-.. revealjs-break::
+Django内蔵のO/Rマッパーについて
+-------------------------------
 
-Djangoは `Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) を検索してみたが、PEP 681に関する情報は見当たらなかった。
+`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) を検索してみたが、PEP 681に関する情報は見当たらなかった。
 
 まとめ
 ======
 
 * PEP 681登場以前、attrs、Pydantic、SQLAlchemy、Django ORMなどでは、初期化処理に関する型チェックを行うことができなかった
 * PEP 681でこれらのライブラリでもデータクラスのような型チェックをできる
+
+.. revealjs-break::
+
 * 2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。他の型チェッカーがんばれ！
+* attrs、Pydantic、SQLAlchemyはPEP 681に対応している。Djangoも対応してほしい…
