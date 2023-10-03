@@ -471,8 +471,50 @@ Pydanticは ``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコ�
 
 .. revealjs-break::
 
-SQLAlchemyはattrsを使ったクラスをSQLAlchemy用のクラスにする機能がある。
-また、データクラスそのものも利用できる。
+SQLAlchemyは ``sqlalchemy.orm.MappedAsDataclass`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+
+.. revealjs-code-block:: python
+
+    from sqlalchemy.orm import (DeclarativeBase, Mapped, MappedAsDataclass,
+                                mapped_column)
+
+    class Base(DeclarativeBase):
+        pass
+
+    class Book(MappedAsDataclass, Base):
+        """User class will be converted to a dataclass"""
+
+        __tablename__ = "book"
+
+        id: Mapped[int] = mapped_column(init=False, primary_key=True)
+        title: Mapped[str]
+        price: Mapped[int]
+
+.. revealjs-break::
+
+また、attrsを使ったクラスをSQLAlchemy用のクラスにする機能がある。
+
+.. revealjs-code-block:: python
+
+    import attr
+    from sqlalchemy import Column, Integer, String, Table
+    from sqlalchemy.orm import Mapped, registry
+
+    mapper_registry = registry()
+
+    @mapper_registry.mapped
+    @attr.define(slots=False)
+    class Book:
+        __table__ = Table(
+            "book",
+            mapper_registry.metadata,
+            Column("id", Integer, autoincrement=True, primary_key=True),
+            Column("title", String(50)),
+            Column("price", Integer),
+        )
+        id: Mapped[int] = attr.ib(init=False)
+        title: Mapped[str]
+        price: Mapped[int]
 
 .. revealjs-break::
 
