@@ -288,6 +288,14 @@ typingモジュールに `dataclass_transform <https://docs.python.org/3/library
 dataclass_transformデコレーターの使用例
 ---------------------------------------
 
+時間の都合上、今回は `1.` のみ紹介。
+
+1. 自作の関数デコレータに使う方法
+2. 自作の基底クラスに使う方法
+3. 自作のメタクラスに使う方法
+
+.. revealjs-break::
+
 まず、以下の ``my_orm.py`` を作成。
 
 .. revealjs-code-block:: python
@@ -351,7 +359,7 @@ dataclass_transformデコレータの仕組みについて解説
 dataclass_transformデコレータのソースコードはこうなっている
 -----------------------------------------------------------
 
-``dataclass_transform`` デコレータはクラスに ``__dataclass_transform__`` 属性を追加するだけ。
+``dataclass_transform`` デコレータはデコレート対象に ``__dataclass_transform__`` 属性を追加するだけ。
 
 .. revealjs-code-block:: python
 
