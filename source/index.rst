@@ -546,7 +546,7 @@ SQLAlchemyについて
 
 .. revealjs-break::
 
-データクラスの定義とテーブル定義で似たような構造を二重管理することになるので少し面倒そう。
+型アノテーションとテーブル定義で似たような構造を二重管理することになるので少し面倒そう。
 
 .. revealjs-code-block:: python
 
@@ -565,7 +565,7 @@ SQLAlchemyについて
 Django内蔵のO/Rマッパーについて
 -------------------------------
 
-`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs) で「PEP 681」、「dataclass_transform」を検索してみたが、該当する情報は見当たらなかった。
+`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs)、`メーリングリスト <https://groups.google.com/g/django-users?pli=1>`_ で「PEP 681」、「dataclass_transform」を検索してみたが、該当する情報は見当たらなかった。
 
 まとめ
 ======
