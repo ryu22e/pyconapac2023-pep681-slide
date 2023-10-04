@@ -82,7 +82,7 @@ PEP 681を一言で説明すると
 
 * `attrs <https://www.attrs.org/en/stable/>`_
 * `Pydantic <https://docs.pydantic.dev/latest/>`_
-* `SQLAlchemy <https://www.sqlalchemy.org/>`_ 
+* `SQLAlchemy <https://www.sqlalchemy.org/>`_
 * `Django <https://docs.djangoproject.com/ja/4.2/>`_ 内蔵のO/Rマッパー
 
 Djangoの例
@@ -258,6 +258,29 @@ PEP 681以前に存在したある問題
 
     $ python books2.py  # "Baseクラスの初期化処理"が表示されない
 
+すべてのライブラリで型ヒントの恩恵を受けるのは難しい
+----------------------------------------------------
+
+型チェッカー側でプラグインとしてこれを解決しようとしているものもある。
+
+Mypyのプラグイン機能
+--------------------
+
+例えばMypyはプラグインで機能を拡張できる。
+
+.. revealjs-code-block:: toml
+
+    # 設定ファイル（mypy.ini）にこんな形でプラグインを指定できる
+   [mypy]
+   plugins = /one/plugin.py, other.plugin
+
+参考: https://mypy.readthedocs.io/en/stable/extending_mypy.html#configuring-mypy-to-use-plugins
+
+プラグインにも問題がある
+------------------------
+
+ただし、プラグインは特定の型チェッカー専用。しかも、メンテナの負担が大きい。
+
 
 PEP 681登場によって何が解決されるのか
 =====================================
@@ -266,6 +289,14 @@ typingモジュールに `dataclass_transform <https://docs.python.org/3/library
 
 dataclass_transformデコレーターの使用例
 ---------------------------------------
+
+時間の都合上、今回は `1.` のみ紹介。
+
+1. 自作の関数デコレータに使う方法
+2. 自作の基底クラスに使う方法
+3. 自作のメタクラスに使う方法
+
+.. revealjs-break::
 
 まず、以下の ``my_orm.py`` を作成。
 
@@ -278,7 +309,6 @@ dataclass_transformデコレーターの使用例
 
     @dataclass_transform()
     def create_model(cls: type[T]) -> type[T]:
-        """Bookクラスに適用するデコレーター"""
         # クラスの型アノテーションを元にフィールドを追加
         for key, value in cls.__annotations__.items():
             if value is str:
@@ -289,7 +319,7 @@ dataclass_transformデコレーターの使用例
 
 .. revealjs-break::
 
-次に、以下の ``books4.py`` を作成。
+次に、以下の ``books.py`` を作成。
 
 .. revealjs-code-block:: python
 
@@ -314,10 +344,10 @@ dataclass_transformデコレーターの使用例
 
 .. revealjs-code-block:: shell
 
-    $ pyright books4.py
+    $ pyright books.py
     （省略）
-    /***/books4.py
-      /***/books4.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
+    /***/books.py
+      /***/books.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
         "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
     1 error, 0 warnings, 0 informations
     Completed in 0.452sec
@@ -330,7 +360,7 @@ dataclass_transformデコレータの仕組みについて解説
 dataclass_transformデコレータのソースコードはこうなっている
 -----------------------------------------------------------
 
-``dataclass_transform`` デコレータはクラスに ``__dataclass_transform__`` 属性を追加するだけ。
+``dataclass_transform`` デコレータはデコレート対象に ``__dataclass_transform__`` 属性を追加するだけ。
 
 .. revealjs-code-block:: python
 
@@ -357,24 +387,197 @@ dataclass_transformデコレータのソースコードはこうなっている
 
 型チェッカーは ``__dataclass_transform__`` 属性があるクラスに対して、型アノテーションをもとにした型チェックを行う。
 
+型チェッカーのPEP 681への対応状況
+=================================
+
+以下について調べた。
+
+* Pyright(1.1.328)
+* Mypy(1.5.1)
+* Pyre(0.9.18)
+* pytype(2023.9.27)
+
+調べた結果
+----------
+
+2023年10月27日現在、公式ドキュメントでPEP 681対応を謳っているのはPyrightのみ。
+
+Pyrightについて
+---------------
+
+以下公式ドキュメント「Type Checking Features」にPEP 681が載っている。
+
+https://microsoft.github.io/pyright/#/features
+
+Mypyについて
+------------
+
+このスライドに載せたサンプルコードで型チェックできることは確認したが、以下Issueの内容を読むと完全に対応したわけではなさそう。
+
+https://github.com/python/mypy/issues/14293
+
+Pyreについて
+------------
+
+0.9.11のリリースノートに"Basic support for PEP 681 (dataclass transforms)."と書いているが、実際に型チェックしてみるとエラーを検出してくれなかった（0.9.18で確認）。
+
+https://github.com/facebook/pyre-check/releases/tag/v0.9.11
+
+pytypeについて
+--------------
+
+Python 3.11対応自体がまだできていない。
+Python 3.11対応は以下Issueで進めている。
+
+https://github.com/google/pytype/issues/1308
+
+PyrightはVS Codeから簡単に呼び出せる
+------------------------------------
+
+Pylanceという拡張をインストールすると、VS Codeから簡単にPyrightを呼び出せる。
+
+.. revealjs-break::
+
+.. figure:: vscode-and-pylance.*
+   :alt: VS Code + Pylanceでエラーを表示できる
+
+   VS Code + Pylanceでエラーを表示できる
+
 「データクラスと似た構造を持つクラスを扱うライブラリ」のPEP 681への対応状況
 ===========================================================================
 
 以下について調べた。
 
-* Pyright
-* Mypy
-* Pyre
-* pytype
+* attrs(23.1.0)
+* Pydantic(2.4.2)
+* SQLAlchemy(2.0.21)
+* Django内蔵のO/Rマッパー(4.2.5)
 
 調べた結果
 ----------
 
-2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。
+Django以外はPEP 681に対応している。
+
+attrsについて
+-------------
+
+``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
+
+.. revealjs-code-block:: python
+
+   import attr
+
+   @attr.define
+   class Book:
+       title: str
+       price: int
+
+Pydanticについて
+----------------
+
+``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+
+.. revealjs-code-block:: python
+
+    from pydantic import BaseModel
+
+    class Book(BaseModel):
+        title: str
+        price: int
+
+SQLAlchemyについて
+------------------
+
+``dataclass_transform`` デコレータに相当する機能を持つものは2つ。
+
+1つ目は ``sqlalchemy.orm.MappedAsDataclass`` クラス。
+
+.. revealjs-code-block:: python
+
+    from sqlalchemy.orm import (DeclarativeBase, Mapped, MappedAsDataclass,
+                                mapped_column)
+
+    class Base(DeclarativeBase):
+        pass
+
+    class Book(MappedAsDataclass, Base):
+        __tablename__ = "book"
+        id: Mapped[int] = mapped_column(init=False, primary_key=True)
+        title: Mapped[str]
+        price: Mapped[int]
+
+.. revealjs-break::
+
+2つ目は ``registry.mapped_as_dataclass()`` 。
+
+.. revealjs-code-block:: python
+
+    from sqlalchemy.orm import Mapped, mapped_column, registry
+
+    reg = registry()
+
+    @reg.mapped_as_dataclass(unsafe_hash=True)
+    class Book:
+        __tablename__ = "book"
+
+        id: Mapped[int] = mapped_column(init=False, primary_key=True)
+        title: Mapped[str]
+        price: Mapped[int]
+
+.. revealjs-break::
+
+また、attrsを使ったクラスをSQLAlchemy用のクラスにする機能がある。
+
+.. revealjs-code-block:: python
+
+    import attr
+    from sqlalchemy import Column, Integer, String, Table
+    from sqlalchemy.orm import Mapped, registry
+
+    mapper_registry = registry()
+
+    @attr.define(slots=False)
+    class Book:
+        id: Mapped[int] = attr.ib(init=False)
+        title: Mapped[str]
+        price: Mapped[int]
+    # ↓まだ続きがある
+
+
+.. revealjs-break::
+
+型アノテーションとテーブル定義で似たような構造を二重管理することになるので少し面倒そう。
+
+.. revealjs-code-block:: python
+
+    # ↑前の続き
+    book = Table(
+        "book",
+        mapper_registry.metadata,
+        Column("id", Integer, autoincrement=True, primary_key=True),
+        Column("title", String(50)),
+        Column("price", Integer),
+    )
+
+    mapper_registry.map_imperatively(Book, book)
+
+
+Django内蔵のO/Rマッパーについて
+-------------------------------
+
+`Issue Tracker <https://code.djangoproject.com/query>`_ と `Django Enhancement Proposals <https://github.com/django/deps>`_ (DEPs)、`メーリングリスト <https://groups.google.com/g/django-users?pli=1>`_ で「PEP 681」、「dataclass_transform」を検索してみたが、該当する情報は見当たらなかった。
 
 まとめ
 ======
 
+まとめ1
+-------
+
 * PEP 681登場以前、attrs、Pydantic、SQLAlchemy、Django ORMなどでは、初期化処理に関する型チェックを行うことができなかった
 * PEP 681でこれらのライブラリでもデータクラスのような型チェックをできる
+
+まとめ2
+-------
+
 * 2023年10月27日現在、PEP 681対応を謳っているのはPyrightのみ。他の型チェッカーがんばれ！
+* attrs、Pydantic、SQLAlchemyはPEP 681に対応している。Djangoも対応してほしい😢
