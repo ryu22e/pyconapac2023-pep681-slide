@@ -68,14 +68,10 @@ PEP 681を一言で説明すると
 データクラスは型チェッカーを使って型チェックできる
 --------------------------------------------------
 
-.. revealjs-code-block:: bash
+.. figure:: pyright-dataclass_example.*
+   :alt: pyrightの実行結果
 
-   $ pyright example.py
-   /****/example.py
-     /****/example.py:14:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
-       "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
-   1 error, 0 warnings, 0 informations
-
+   pyrightの実行結果
 
 「データクラスと似た構造を持つクラスを扱うライブラリ」とは
 ----------------------------------------------------------
@@ -127,7 +123,7 @@ PEP 681以前に存在したある問題
 
 .. revealjs-code-block:: python
 
-   """使用例(books.py)"""
+   """使用例"""
    from orm import Base, String, Integer
 
    class Book(Base):
@@ -138,7 +134,7 @@ PEP 681以前に存在したある問題
 こんなコードを書くとどうなる？
 ------------------------------
 
-``books.py`` の最後に以下のコードを追加
+最後に以下のコードを追加
 
 .. revealjs-code-block:: python
 
@@ -151,13 +147,10 @@ PEP 681以前に存在したある問題
 型チェックではエラーにならない
 ------------------------------
 
-.. revealjs-code-block:: shell
+.. figure:: pyright-books-1.*
+   :alt: pyrightの実行結果
 
-   $ pyright books.py
-   （省略）
-   0 errors, 0 warnings, 0 informations
-   Completed in 0.512sec
-   ✨  Done in 0.86s.
+   pyrightの実行結果
 
 なぜエラーにならないのか
 ------------------------
@@ -197,15 +190,10 @@ PEP 681以前に存在したある問題
 
 .. revealjs-code-block:: shell
 
-    $ pyright dataclass_books.py
-    （省略）
-    /***/dataclass_books.py
-      /***/dataclass_books.py:11:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
-        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
-    1 error, 0 warnings, 0 informations
-    Completed in 0.448sec
-    error Command failed with exit code 1.
-    info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+.. figure:: pyright-dataclass_books.*
+   :alt: pyrightの実行結果
+
+   pyrightの実行結果
 
 ではこんな風に書けばいいのでは？
 --------------------------------
@@ -230,16 +218,10 @@ PEP 681以前に存在したある問題
 一応型チェックはできるが…
 -------------------------
 
-.. revealjs-code-block:: shell
+.. figure:: pyright-books2.*
+   :alt: pyrightの実行結果
 
-    $ pyright books2.py
-    （省略）
-    /***/books2.py
-      /***/books2.py:13:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
-        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
-    1 error, 0 warnings, 0 informations
-    Completed in 0.454sec
-    error Command failed with exit code 1.
+   pyrightの実行結果
 
 ``Base.__init__`` に定義されたコードが呼ばれなくなった
 ------------------------------------------------------
@@ -319,7 +301,7 @@ dataclass_transformデコレーターの使用例
 
 .. revealjs-break::
 
-次に、以下の ``books.py`` を作成。
+次に、以下のファイルを作成。
 
 .. revealjs-code-block:: python
 
@@ -342,17 +324,10 @@ dataclass_transformデコレーターの使用例
 
 データクラスと同じように型チェックが行われる。
 
-.. revealjs-code-block:: shell
+.. figure:: pyright-pep681_books.*
+   :alt: pyrightの実行結果
 
-    $ pyright books.py
-    （省略）
-    /***/books.py
-      /***/books.py:12:11 - error: Argument of type "Literal['定価2,970円（本体2,700円＋税10%）']" cannot be assigned to parameter "price" of type "int" in function "__init__"
-        "Literal['定価2,970円（本体2,700円＋税10%）']" is incompatible with "int" (reportGeneralTypeIssues)
-    1 error, 0 warnings, 0 informations
-    Completed in 0.452sec
-    error Command failed with exit code 1.
-    info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+   pyrightの実行結果
 
 dataclass_transformデコレータの仕組みについて解説
 =================================================
