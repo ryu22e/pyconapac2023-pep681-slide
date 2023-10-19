@@ -368,7 +368,7 @@ dataclass_transformデコレータのソースコードはこうなっている
 以下について調べた。
 
 * Pyright(1.1.328)
-* Mypy(1.6.0)
+* Mypy(1.6.1)
 * Pyre(0.9.18)
 * pytype(2023.9.27)
 
