@@ -188,8 +188,6 @@ PEP 681以前に存在したある問題
 
 .. revealjs-break::
 
-.. revealjs-code-block:: shell
-
 .. figure:: pyright-dataclass_books.*
    :alt: pyrightの実行結果
 
