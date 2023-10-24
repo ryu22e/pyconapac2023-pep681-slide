@@ -203,6 +203,9 @@ PEP 681以前に存在したある問題
 
    pyrightの実行結果
 
+O/Rマッパーとデータクラスの機能のいいとこ取りができないか？
+-----------------------------------------------------------
+
 ではこんな風に書けばいいのでは？
 --------------------------------
 
@@ -223,13 +226,26 @@ PEP 681以前に存在したある問題
         price="定価2,970円（本体2,700円＋税10%）",
     )
 
-一応型チェックはできるが…
--------------------------
+一応型チェックはできる
+----------------------
 
 .. figure:: pyright-books2.*
    :alt: pyrightの実行結果
 
    pyrightの実行結果
+
+``dataclass`` デコレーターが型ヒントを作ってくれるので、型チェックができる
+--------------------------------------------------------------------------
+
+.. revealjs-code-block:: shell
+
+   >>> from books import Book
+   Baseクラスの初期化処理
+   >>> help(Book.__init__)
+   Help on function __init__ in module hoge:
+
+   __init__(self, title: str, price: int) -> None
+       Initialize self.  See help(type(self)) for accurate signature.
 
 ``Base.__init__`` に定義されたコードが呼ばれなくなった
 ------------------------------------------------------
@@ -251,7 +267,7 @@ PEP 681以前に存在したある問題
 なぜ ``Base.__init__`` が呼ばれないのか
 ---------------------------------------
 
-``dataclass`` デコレータは ``__init__`` を上書きするので。
+``dataclass`` デコレーターは ``__init__`` を上書きするので。
 
 ライブラリによっては型ヒントの恩恵を受けるのは難しい場合もある
 --------------------------------------------------------------
@@ -287,7 +303,7 @@ dataclass_transformデコレーターの使用例
 
 時間の都合上、今回は `1.` のみ紹介。
 
-1. 自作の関数デコレータに使う方法
+1. 自作の関数デコレーターに使う方法
 2. 自作の基底クラスに使う方法
 3. 自作のメタクラスに使う方法
 
@@ -342,13 +358,13 @@ dataclass_transformデコレーターの使用例
 
    pyrightの実行結果
 
-dataclass_transformデコレータの仕組みについて解説
-=================================================
+dataclass_transformデコレーターの仕組みについて解説
+===================================================
 
-dataclass_transformデコレータのソースコードはこうなっている
------------------------------------------------------------
+dataclass_transformデコレーターのソースコードはこうなっている
+-------------------------------------------------------------
 
-``dataclass_transform`` デコレータはデコレート対象に ``__dataclass_transform__`` 属性を追加するだけ。
+``dataclass_transform`` デコレーターはデコレート対象に ``__dataclass_transform__`` 属性を追加するだけ。
 
 .. revealjs-code-block:: python
 
@@ -373,7 +389,7 @@ dataclass_transformデコレータのソースコードはこうなっている
 
 .. revealjs-break::
 
-型チェッカーは ``__dataclass_transform__`` 属性があるクラスに対して、型アノテーションをもとにした型チェックを行う。
+型チェッカーは ``__dataclass_transform__`` 属性を読み取ると、「このクラスはデータクラスではないがデータクラスのような型チェックを行ってほしい」というメッセージとして受け取る。
 
 型チェッカーのPEP 681への対応状況
 =================================
@@ -449,7 +465,7 @@ Django以外はPEP 681に対応している。
 attrsについて
 -------------
 
-``attr.define`` デコレータが ``dataclass_transform`` デコレータに相当する機能を持つ。
+``attr.define`` デコレーターが ``dataclass_transform`` デコレーターに相当する機能を持つ。
 
 .. revealjs-code-block:: python
 
@@ -463,7 +479,7 @@ attrsについて
 Pydanticについて
 ----------------
 
-``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレータに相当する機能を持つ。
+``pydantic.BaseModel`` クラスが ``dataclass_transform`` デコレーターに相当する機能を持つ。
 
 .. revealjs-code-block:: python
 
@@ -476,7 +492,7 @@ Pydanticについて
 SQLAlchemyについて
 ------------------
 
-``dataclass_transform`` デコレータに相当する機能を持つものは2つ。
+``dataclass_transform`` デコレーターに相当する機能を持つものは2つ。
 
 1つ目は ``sqlalchemy.orm.MappedAsDataclass`` クラス。
 
@@ -496,7 +512,7 @@ SQLAlchemyについて
 
 .. revealjs-break::
 
-2つ目は ``registry.mapped_as_dataclass()`` 。
+2つ目は ``registry.mapped_as_dataclass()`` デコレーター。
 
 .. revealjs-code-block:: python
 
