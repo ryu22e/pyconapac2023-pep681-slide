@@ -215,8 +215,10 @@ O/Rマッパーとデータクラスの機能のいいとこ取りができな�
 
     from orm import Base
 
+    # Baseクラスを継承したデータクラスを作る
     @dataclass
     class Book(Base):
+        # Baseクラスで型アノテーションを元にフィールドを作る想定
         title: str
         price: int
 
