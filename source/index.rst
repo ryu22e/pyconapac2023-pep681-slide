@@ -259,7 +259,7 @@ O/Rマッパーとデータクラスの機能のいいとこ取りができな�
    >>> from books import Book
    Baseクラスの初期化処理
    >>> help(Book.__init__)
-   Help on function __init__ in module hoge:
+   Help on function __init__ in module orm:
 
    __init__(self, title: str, price: int) -> None
        Initialize self.  See help(type(self)) for accurate signature.
