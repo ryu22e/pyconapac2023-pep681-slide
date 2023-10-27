@@ -113,6 +113,10 @@ Djangoで前述のデータクラス ``Book`` を表現するとこうなる。
        title = models.CharField(max_length=255)
        price = models.IntegerField()
 
+    # 使用例
+    book = Book(title="Python実践レシピ", price=2970)
+    book.save()
+
 PEP 681以前に存在したある問題
 =============================
 
