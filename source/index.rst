@@ -22,6 +22,17 @@
 「Python Boot Campの紹介 - あなたの街で開催しませんか？」というポスターセッションをやっています。
 ぜひ遊びに来てください！
 
+.. revealjs-break::
+
+10/29のスプリントでPython Boot Campテキストの改善をやります。
+
+夜にはUnofficial Partyもあるので、ぜひ遊びに来てください！（この資料は後でSNSにアップします）
+
+.. figure:: unofficial-party-qr.*
+   :alt: Unofficial Partyの参加登録先
+
+   `Unofficial Partyの参加登録先 <https://connpass.com/event/300385/>`_
+
 今日話したいこと
 ----------------
 
